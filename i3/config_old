@@ -40,15 +40,13 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-tray
-exec --no-startup-id pasystray
-
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -95,7 +93,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+f floating toggle
 
 # change focus between tiling / floating windows
-#bindsym $mod+Shift+f focus mode_toggle
+bindsym $mod+Shift+f focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -189,7 +187,7 @@ bar {
         position top
         font pango:Source Code Pro Medium 11, Material Design Icons 11, FontAwesome 11
         separator_symbol " "
-	status_command python ~/dev/bumblebee-status/bumblebee-status -m arch-update spacer indicator spacer sensors2 docker_ps smartstatus memory cpu  spacer pomodoro date time -t iceberg-contrast -p docker_ps.interval="1m" smartstatus.interval="1h" smartstatus.display="combined_singles" smartstatus.drives="sda,nvme0n1" smartstatus.show_names="False" memory.format="{percent:3.1f}%" cpu.format="{:3.1f}%" cpu.theme.minwidth="100.0000%" cpu.interval="5s" memory.interval="5s" sensors2.chip_field_include="coretemp-isa-0000.temp1,nvme-pci-3a00.temp1" sensors2.showcpu="false" sensors2.interval="20s" date.format="%A %B, %d" time.format="%H:%M" time.interval="1m" date.interval="1h" spacer.text="		" 
+	status_command python ~/dev/bumblebee-status/bumblebee-status -m sensors2 docker_ps smartstatus memory cpu spacer nic bluetooth2  spacer pomodoro date time battery-upower -t iceberg-contrast -p battery-upower.interval="1m" docker_ps.interval="1m" smartstatus.interval="1h" smartstatus.show_names="False" memory.format="{percent:3.1f}%" cpu.format="{:3.1f}%" cpu.theme.minwidth="100.0000%" cpu.interval="5s" memory.interval="5s" sensors2.chip_field_include="thinkpad-isa-0000.fan1,thinkpad-isa-0000.temp1" sensors2.showcpu="false" sensors2.interval="20s" date.format="%A %B, %d" time.format="%H:%M" time.interval="1m" date.interval="1h" spacer.text="		" nic.format="{ssid}" nic.exclude="lo,virbr,docker,vboxnet,veth,br,enp0s25" 
         tray_output primary
         strip_workspace_numbers yes
         
@@ -214,19 +212,14 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id gnome-flashback
 exec --no-startup-id /usr/bin/gnome-screensaver
 bindsym $mod+Escape exec dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock
+exec --no-startup-id nitrogen --restore
 
 #Start my stuff
-#exec insync start
+exec --no-startup-id insync start
 exec --no-startup-id guake
-exec --no-startup-id solaar -w hide
 #exec franz
 #exec spotify-tray
 
-bindsym $mod+m exec spotify-tray --toggle
+bindsym $mod+m exec spotify-tray
 bindsym $mod+c exec chromium
 bindsym $mod+i exec codium
-bindsym $mod+Shift+f exec nautilus
-
-#Screenshots
-bindsym Print exec --no-startup-id gnome-screenshot -i
-#bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Screenshots/$(date)"
