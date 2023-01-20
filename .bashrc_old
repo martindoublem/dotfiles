@@ -74,7 +74,7 @@ set_prompt()
       PS1="\[$txtred\]$fancyx \[$txtreset\]\[$txtbold\]($last_cmd) \n"
    fi
    # Line 2: shell name @ hostname and  Directory
-   PS1+="\[$txtbold\] $venv \s @ \[$txtblue\]\h\[$txtreset\]\[$txtbold\]: \[$txtgreen\]\w   \[$txtred\] `basename \"$VIRTUAL_ENV\"`$CONDA_DEFAULT_ENV \n"
+   PS1+="\[$txtbold\] $venv \s @ \[$txtblue\]\h\[$txtreset\]\[$txtbold\]: \[$txtgreen\]\w   \[$txtred\] `basename \"$VIRTUAL_ENV\"` \n"
    # Line 3: date time
    PS1+="\[$txtreset\]\[$txtbold\] --->>>\[$txtred\] \$(parse_git_branch) \[$txtyellow\] \d \[$txtreset\]\[$txtbold\]\t "
    # User color: red for root, yellow for others
@@ -88,20 +88,5 @@ set_prompt()
 }
 PROMPT_COMMAND='set_prompt'
 export EDITOR=nano
-[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/usr/etc/profile.d/conda.sh" ]; then
-        . "/usr/etc/profile.d/conda.sh"
-    else
-        export PATH="/usr/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
+export PATH=$PATH:$HOME/dev/weboob/scripts
+export PYTHONPATH=$PYTHONPATH:$HOME/dev/weboob
